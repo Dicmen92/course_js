@@ -1,6 +1,6 @@
 'use strict';
 
-let money = 10000,
+let money = 12000,
 mission = 35000,
 addExpenses = 'Интернет, Телефон, Билет на метро',
 expenses1 = 'Поход в кино',
@@ -11,6 +11,14 @@ deposit = true;
 const income = 'Фриланс',
 period = 7;
 
+money = prompt('Ваш месячный доход?', money);
+addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую?', addExpenses);
+deposit = confirm('Есть ли у вас депозит в банке?');
+expenses1 = prompt('Введите обязательную статью расходов?', expenses1);
+amount1 = prompt('Во сколько это обойдется??', amount1);
+expenses2 = prompt('Введите обязательную статью расходов?', expenses2);
+amount2 = prompt('Во сколько это обойдется??', amount2);
+
 function getExpensesMonth(amount1, amount2) {
   return +amount1 + +amount2;
 }
@@ -18,6 +26,8 @@ function getExpensesMonth(amount1, amount2) {
 function getAccumulatedMonth(money) {
   return +money - getExpensesMonth(amount1, amount2);
 }
+
+console.log('dfsdfsdf4fsd54fsd56f4', getAccumulatedMonth(money));
 
 let accumulatedMonth = getAccumulatedMonth(money);
 
@@ -40,14 +50,6 @@ let getStatusIncome = function() {
     console.log('Что то пошло не так');
   }  
 }
-
-money = prompt('Ваш месячный доход?', money);
-addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую?', addExpenses);
-deposit = confirm('Есть ли у вас депозит в банке?');
-expenses1 = prompt('Введите обязательную статью расходов?', expenses1);
-amount1 = prompt('Во сколько это обойдется??', amount1);
-expenses2 = prompt('Введите обязательную статью расходов?', expenses2);
-amount2 = prompt('Во сколько это обойдется??', amount2);
 
 showTypeOf(income);
 showTypeOf(+money);
