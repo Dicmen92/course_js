@@ -135,7 +135,7 @@ for (let key in appData){
 
 var str = appData.addExpensesUp.toString(); 
 function capitalize(str) {
- return str.replace(/(^|\s)\S/g, function(a) {return a.toUpperCase()})
+ return str.replace(/(^|\s)\S/g,  function(a) {return a.toUpperCase().replace(" ", "," + ' ')})
 }
 console.log(capitalize(str));
 
