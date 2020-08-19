@@ -1,0 +1,21 @@
+'use strict';
+
+  let calculate = document.getElementById('start'),
+      addIncome = document.getElementsByTagName('button')[0],
+      compulsoryExpense = document.getElementsByTagName('button')[1],
+      deposit = document.querySelector('#deposit-check'),
+      possibleIncome = document.querySelectorAll('.additional_income-item'),
+      monthIncomeСalc = document.getElementsByClassName('budget_month-value'),
+      dailyBudgetСalc = document.getElementsByClassName('budget_day-value'),
+      monthConsumptionСalc = document.getElementsByClassName('expenses_month-value'),
+      possibleIncomeСalc = document.getElementsByClassName('additional_expenses-value'),
+      savingsPeriodСalc = document.getElementsByClassName('income_period-value'),
+      targetTermСalc = document.getElementsByClassName('target_month-value'),
+      monthIncome = document.querySelector('.salary-amount'),
+      additionalIncomeName = document.querySelector('.income-items .income-title'),
+      additionalIncomeSum = document.querySelector('.income-items .income-amount'),
+      obligatoryExpensesName = document.querySelector('.expenses-items .expenses-title'),
+      obligatoryExpensesSum = document.querySelector('.expenses-items .expenses-amount'),
+      possibleCosts = document.querySelector('.additional_expenses-item'),
+      target = document.querySelector('.target-amount'),
+      settlementPeriod = document.querySelector('.period-select');
