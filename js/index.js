@@ -96,7 +96,7 @@ let appData  = {
   addExpensesBlock : function(){
     let CloneExpensesItem = expensesItems[0].cloneNode(true);
     expensesItems[0].parentNode.insertBefore(CloneExpensesItem, expensesPlus);
-    expensesItems = document.querySelectorAll('.expenses-items');   
+    expensesItems = document.querySelectorAll('.expenses-items');    
     if(expensesItems.length === 3){
       expensesPlus.style.display = 'none';
     }
@@ -235,6 +235,8 @@ let appData  = {
       elem.value = '';
     });
 
+    
+
     this.budget = 0;
     this.budgetDay = 0;
     this.budgetMonth = 0;
@@ -250,21 +252,13 @@ let appData  = {
     this.moneyDeposit = 0;   
     
     cancel.style.display = 'none';
-    start.style.display = 'block';        
+    start.style.display = 'block';  
+    
+   periodSelect.value = 1;
+   periodAmount.innerHTML = periodSelect.value;
+  
 
-    appData.getSalaryAmountDisabled(); 
-    /*
-    this.budget = +salaryAmount.value;  
-
-    this.getExpenses(); 
-    this.getIncome();    
-    this.getExpensesMonth();     
-    this.getAddExpenses();
-    this.getAddIncome();
-    this.getBudget(); 
-
-    this.showResult();
-    */
+    appData.getSalaryAmountDisabled();    
   },
 
   };   
