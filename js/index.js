@@ -1,5 +1,13 @@
 'use strict';
 
+const isNumber = (n) => {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+};
+
+const isString = (k) => {
+  return isNaN(parseFloat(k)) && !(k.trim() == "");
+};
+
   let incomeItems = document.querySelectorAll('.income-items'), 
       expensesItems = document.querySelectorAll('.expenses-items');
 
@@ -10,9 +18,11 @@
       incomPlus = btnplus[0],
       expensesPlus = btnplus[1],      
       calculate = document.getElementById('start'),      
-      deposit = document.querySelector('#deposit-check'),
+      depositCheck = document.querySelector('#deposit-check'),
       additionalIncomeItem = document.querySelectorAll('.additional_income-item'),
       additionalIncomeValue = document.querySelector('.additional_income-value'),
+      depositPercent = document.querySelector('.deposit-percent'),
+
       budgetMonthValue = document.getElementsByClassName('budget_month-value')[0],
       budgetDayValue = document.getElementsByClassName('budget_day-value')[0],
       expensesMonthValue = document.getElementsByClassName('expenses_month-value')[0],
@@ -22,6 +32,8 @@
       salaryAmount = document.querySelector('.salary-amount'),      
       obligatoryExpensesName = document.querySelector('.expenses-items .expenses-title'),      
       additionalExpensesItem = document.querySelector('.additional_expenses-item'),
+      depositBank = document.querySelector('.deposit-bank'),
+      depositAmount = document.querySelector('.deposit-amount'),
       targetAmount = document.querySelector('.target-amount'),
       incomeTitle = document.querySelector('.income-title'),
       incomeAmount = document.querySelector('.income-amount'),
@@ -45,7 +57,7 @@
     this.moneyDeposit = 0;
     }   
 
-   start() {    
+   start() {  
 
     const allInput = document.querySelectorAll('.data input[type = text]');
     allInput.forEach(function(item) {
@@ -68,6 +80,7 @@
     this.getExpensesMonth();     
     this.getAddExpenses();
     this.getAddIncome();
+    this.getInfoDeposit();
     this.getBudget(); 
 
     this.showResult();     
@@ -156,7 +169,8 @@
  };
 
   getBudget(){
-    this.budgetMonth = this.budget + +this.incomeMonth - +this.expensesMonth;            
+    const monthDeposit = this.moneyDeposit * (this.percentDeposit / 100);
+    this.budgetMonth = this.budget + +this.incomeMonth - +this.expensesMonth + monthDeposit;            
     this.budgetDay = Math.round(this.budgetMonth / 30);      
   };
 
@@ -176,16 +190,7 @@
     }
     };
     
-  getInfoDeposit() {
-    if (this.deposit) {
-      do {
-      this.percentDeposit = prompt('Какой годовой процент?', '10');
-      this.moneyDeposit = prompt('Какая сумма задолженности?', '10000');
-    }  while (!isNumber(this.percentDeposit, this.moneyDeposit));
-    }
-    };
-
-  calcPeriod() {
+   calcPeriod() {
     return this.budgetMonth * periodSelect.value;
   };
 
@@ -201,6 +206,40 @@
 
   getSalaryAmountActive() {    
     start.disabled = false;     
+  };
+
+  getInfoDeposit() {
+    if (this.deposit) {     
+      this.percentDeposit = depositPercent.value;      
+      this.moneyDeposit = depositAmount.value;    
+    }
+    };
+
+    changePercent(){
+      const valueSelect = this.value;
+      if (valueSelect === 'other') {
+        depositPercent.style.display = 'inline-block';
+        depositPercent.value = '';
+      } else {
+        depositPercent.value = valueSelect;
+        depositPercent.style.display = 'none';         
+      }
+    };
+
+  depositHandler(){
+    if (depositCheck.checked){
+      depositBank.style.display = 'inline-block';
+      depositAmount.style.display = 'inline-block';
+      this.deposit = true;
+      depositBank.addEventListener('change', this.changePercent);      
+    } else {
+      depositBank.style.display = 'none';
+      depositAmount.style.display = 'none';
+      depositBank.value = '';
+      depositAmount.value = '';
+      this.deposit = false;
+      depositBank.removeEventListener('change', this.changePercent);
+    };
   };
 
   reset() {
@@ -241,15 +280,25 @@
     this.expensesMonth = 0;
     this.deposit = false;
     this.percentDeposit = 0;
-    this.moneyDeposit = 0;   
+    this.moneyDeposit = 0;      
     
     cancel.style.display = 'none';
-    start.style.display = 'block';  
+    start.style.display = 'block';      
     
     periodSelect.value = 1;
     periodAmount.innerHTML = periodSelect.value;
     
-    this.getSalaryAmountDisabled();    
+    this.getSalaryAmountDisabled();  
+    
+    depositBank.style.display = 'none';
+    depositAmount.style.display = 'none';
+    depositPercent.style.display = 'none';
+    depositBank.value = '';
+    depositAmount.value = '';    
+    depositCheck.checked = true;
+    depositCheck.checked = !depositCheck.checked;    
+//    depositBank.removeEventListener('change', this.changePercent); 
+    
   };
 
   eventsListeners(){    
@@ -258,11 +307,21 @@
   
     if (salaryAmount !==''){
     salaryAmount.addEventListener('input', this.getSalaryAmountActive);
-    start.addEventListener('click', this.start.bind(appData));  
+    start.addEventListener('click', this.start.bind(this));  
     }; 
     expensesPlus.addEventListener('click', this.addExpensesBlock);
-    incomPlus.addEventListener('click', this.addIncomeBlock);  
-    cancel.addEventListener('click', this.reset.bind(appData));
+    incomPlus.addEventListener('click', this.addIncomeBlock); 
+    depositCheck.addEventListener('change', this.depositHandler.bind(this)); 
+    cancel.addEventListener('click', this.reset.bind(this));
+    
+    depositPercent.addEventListener('input', () => {      
+      if (!isNumber(depositPercent.value) || depositPercent.value < 0 || 
+     depositPercent.value > 100) {
+       alert('Введите корректное значение в поле проценты');
+       depositPercent.value = '';
+     }
+
+    });
 
     //periodSelect.addEventListener('input', appData.getPeriodSelect, appData.showResult);
     
@@ -284,16 +343,3 @@
   const appData = new AppData();
 
   appData.eventsListeners();
-  
-  
-
-
-
-
-/*
-if (appData.getTargetMonth() > 0) {
-  console.log("Цель будет достигнута за " + Math.ceil(appData.getTargetMonth()) + ' месяца');
-} else {
-  console.log('Цель не будет достигнута');
-} ;
-*/  
